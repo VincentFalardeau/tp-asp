@@ -34,6 +34,8 @@
     <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Bookmarks" Relationship="Self.FK__Bookmarks__UserI__3A81B327" FromRole="Users" ToRole="Bookmarks" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK__Bookmarks__Categ__3B75D760">
     <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />

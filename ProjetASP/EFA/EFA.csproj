@@ -135,6 +135,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BookmarksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -143,6 +144,7 @@
     <Compile Include="Models\Bookmark.cs">
       <DependentUpon>ModelEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BookmarkItemView.cs" />
     <Compile Include="Models\Category.cs">
       <DependentUpon>ModelEntity.tt</DependentUpon>
     </Compile>
@@ -228,6 +230,8 @@
     <Content Include="Views\Admin\UsersList.cshtml" />
     <Content Include="Views\Users\Login.cshtml" />
     <Content Include="Views\Users\Subscribe.cshtml" />
+    <Content Include="Views\Bookmarks\Index.cshtml" />
+    <Content Include="Views\Bookmarks\Create.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

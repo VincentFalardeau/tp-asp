@@ -30,6 +30,8 @@
     <Property Name="Sex" Type="int" Nullable="false" />
     <Property Name="BirthDate" Type="datetime" Nullable="false" />
     <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" />
+    <Property Name="LastName" Type="nvarchar(max)" />
   </EntityType>
   <Association Name="FK__Bookmarks__Categ__3B75D760">
     <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />

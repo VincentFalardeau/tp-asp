@@ -35,6 +35,8 @@
           <Property Name="Sex" Type="int" Nullable="false" />
           <Property Name="BirthDate" Type="datetime" Nullable="false" />
           <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK__Bookmarks__Categ__3B75D760">
           <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
@@ -111,6 +113,8 @@
           <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Bookmarks" Relationship="Self.FK__Bookmarks__UserI__3A81B327" FromRole="Users" ToRole="Bookmarks" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__Bookmarks__Categ__3B75D760">
           <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
@@ -178,6 +182,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="BookmarksManager.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
@@ -203,7 +209,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />

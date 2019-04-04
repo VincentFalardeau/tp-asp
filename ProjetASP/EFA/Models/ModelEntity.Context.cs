@@ -10,9 +10,11 @@
 namespace EFA.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+    using System.Linq;
+
     public partial class DBEntities : DbContext
     {
         public DBEntities()
@@ -28,5 +30,242 @@ namespace EFA.Models
         public virtual DbSet<Bookmark> Bookmarks { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<User> Users { get; set; }
+    }
+
+    public static class BookmarksDBEntities_DAL
+    {
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Users CRUD queries 
+
+        public static User Add(this DBEntities DB, User user)
+        {
+            if (user != null)
+            {
+                User new_User = DB.Users.Add(user);
+                DB.SaveChanges();
+                return new_User;
+            }
+            return null;
+        }
+
+        public static User Update(this DBEntities DB, User user)
+        {
+            if (user != null)
+            {
+                User userToUpdate = DB.Users.Find(user.Id);
+                if (userToUpdate != null)
+                {
+                    //userToUpdate.Update(user);
+                    DB.Entry(userToUpdate).State = System.Data.Entity.EntityState.Modified;
+                    DB.SaveChanges();
+                    return DB.Users.Find(userToUpdate.Id);
+                }
+            }
+            return null;
+        }
+
+        public static void Delete(this DBEntities DB, User user)
+        {
+            if (user != null)
+            {
+                User userToDelete = DB.Users.Find(user.Id);
+                if (userToDelete != null)
+                {
+                    foreach (Bookmark bookmark in DB.Bookmarks.Where(b => b.UserId == user.Id))
+                    {
+                        DB.Entry(bookmark).State = System.Data.Entity.EntityState.Deleted;
+                    }
+                    DB.Entry(userToDelete).State = System.Data.Entity.EntityState.Deleted;
+                    DB.SaveChanges();
+                }
+            }
+        }
+
+
+        public static User FindByUserName(this DBEntities DB, string userName)
+        {
+            return DB.Users.Where(u => u.UserName == userName).FirstOrDefault();
+        }
+
+        public static List<User> SortedUsers(this DBEntities DB, string sortBy, bool ascendant)
+        {
+            List<User> users = DB.Users.ToList();
+            if (users.Count > 1)
+            {
+                switch (sortBy)
+                {
+                    case "FirstName":
+                        if (ascendant)
+                            users = users.OrderBy(b => b.FirstName).ThenBy(b => b.LastName).ToList();
+                        else
+                            users = users.OrderByDescending(b => b.FirstName).ThenByDescending(b => b.LastName).ToList();
+                        break;
+                    case "CreationDate":
+                        if (ascendant)
+                            users = users.OrderBy(b => b.CreationDate).ToList();
+                        else
+                            users = users.OrderByDescending(b => b.CreationDate).ToList();
+                        break;
+                    case "BirthDate":
+                        if (ascendant)
+                            users = users.OrderBy(b => b.BirthDate).ToList();
+                        else
+                            users = users.OrderByDescending(b => b.BirthDate).ToList();
+                        break;
+                    case "Sex":
+                        if (ascendant)
+                            users = users.OrderBy(b => b.Sex).ToList();
+                        else
+                            users = users.OrderByDescending(b => b.Sex).ToList();
+                        break;
+                }
+            }
+            return users;
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Bookmarks CRUD queries 
+
+        public static Bookmark Add(this DBEntities DB, Bookmark bookmark)
+        {
+            if (bookmark != null)
+            {
+                Bookmark new_Bookmark = DB.Bookmarks.Add(bookmark);
+                DB.SaveChanges();
+                return new_Bookmark;
+            }
+            return null;
+        }
+
+        public static Bookmark Update(this DBEntities DB, Bookmark bookmark)
+        {
+            if (bookmark != null)
+            {
+                Bookmark bookmarkToUpdate = DB.Bookmarks.Find(bookmark.Id);
+                if (bookmarkToUpdate != null)
+                {
+                    //bookmarkToUpdate.Update(bookmark);
+                    DB.Entry(bookmarkToUpdate).State = System.Data.Entity.EntityState.Modified;
+                    DB.SaveChanges();
+                    return DB.Bookmarks.Find(bookmarkToUpdate.Id);
+                }
+            }
+            return null;
+        }
+
+        public static void Delete(this DBEntities DB, Bookmark bookmark)
+        {
+            if (bookmark != null)
+            {
+                Bookmark bookmarkToDelete = DB.Bookmarks.Find(bookmark.Id);
+                if (bookmarkToDelete != null)
+                {
+                    DB.Entry(bookmark).State = System.Data.Entity.EntityState.Deleted;
+                    DB.SaveChanges();
+                }
+            }
+        }
+
+
+        //public static List<BookmarkItemView> BookmarkList(this DBEntities DB, User viewer, string SortBy, bool ascendant)
+        //{
+        //    List<BookmarkItemView> bookmarkItems = new List<BookmarkItemView>();
+        //    foreach (Bookmark bookmark in DB.Bookmarks)
+        //    {
+        //        if ((viewer.Admin) || (viewer.Id == bookmark.UserId) || (bookmark.Shared))
+        //        {
+        //            bookmarkItems.Add(new BookmarkItemView(DB, bookmark, viewer));
+        //        }
+        //    }
+        //    switch (SortBy)
+        //    {
+        //        case "Name":
+        //            if (ascendant)
+        //                bookmarkItems = bookmarkItems.OrderBy(b => b.Name).ToList();
+        //            else
+        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.Name).ToList();
+        //            break;
+        //        case "Url":
+        //            if (ascendant)
+        //                bookmarkItems = bookmarkItems.OrderBy(b => b.Url).ToList();
+        //            else
+        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.Url).ToList();
+        //            break;
+        //        case "OwnerShip":
+        //            if (ascendant)
+        //                bookmarkItems = bookmarkItems.OrderBy(b => b.OwnerShip).ToList();
+        //            else
+        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.OwnerShip).ToList();
+        //            break;
+        //        case "Category":
+        //            if (ascendant)
+        //                bookmarkItems = bookmarkItems.OrderBy(b => b.Category).ToList();
+        //            else
+        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.Category).ToList();
+        //            break;
+        //    }
+
+        //    return bookmarkItems;
+        //}
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Categories CRUD queries 
+
+        public static Category Add(this DBEntities DB, Category category)
+        {
+            if (category != null)
+            {
+                Category new_Category = DB.Categories.Add(category);
+                DB.SaveChanges();
+                return new_Category;
+            }
+            return null;
+        }
+        public static Category Update(this DBEntities DB, Category category)
+        {
+            if (category != null)
+            {
+                Category categoryToUpdate = DB.Categories.Find(category.Id);
+                if (categoryToUpdate != null)
+                {
+                    //categoryToUpdate.Update(category);
+                    DB.Entry(categoryToUpdate).State = System.Data.Entity.EntityState.Modified;
+                    DB.SaveChanges();
+                    return DB.Categories.Find(categoryToUpdate.Id);
+                }
+            }
+            return null;
+        }
+        public static void Delete(this DBEntities DB, Category category)
+        {
+            if (category != null)
+            {
+                Category categoryToDelete = DB.Categories.Find(category.Id);
+                if (categoryToDelete != null)
+                {
+                    foreach (Bookmark bookmark in DB.Bookmarks.Where(b => b.CategoryId == categoryToDelete.Id))
+                    {
+                        bookmark.CategoryId = 0;
+                        DB.Entry(bookmark).State = System.Data.Entity.EntityState.Modified;
+                    }
+                    DB.Entry(categoryToDelete).State = System.Data.Entity.EntityState.Deleted;
+                    DB.SaveChanges();
+                }
+            }
+        }
+
+
+        public static bool CategoryExist(this DBEntities DB, string name)
+        {
+            foreach (Category category in DB.Categories)
+            {
+                if (category.Name == name)
+                    return true;
+            }
+            return false;
+        }
     }
 }

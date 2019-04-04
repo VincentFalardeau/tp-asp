@@ -24,6 +24,8 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="BookmarksManager.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
           <ScalarProperty Name="Password" ColumnName="Password" />
