@@ -24,8 +24,23 @@ namespace EFA.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Bookmark bookmark) {
+        public ActionResult Create(BookmarkView bookmarkview) {
+
+            User loggedUser = OnlineUsers.GetSessionUser();
+
+    
+            Bookmark bookmark = new Bookmark
+            {
+                Name = bookmarkview.Name,
+                Url = bookmarkview.Url,
+                Shared = bookmarkview.Shared,
+                UserId = loggedUser.Id,
+                CategoryId = bookmarkview.CategoryId,
+
+            };
             DB.Bookmarks.Add(bookmark);
+
+            DB.SaveChanges();
             return RedirectToAction("Index");
         }
 
