@@ -21,6 +21,9 @@ namespace EFA.Models
         [RegularExpression(REGEX_Identification, ErrorMessage = "Contains forbidden characters.")]
         public string LastName { get; set; }
 
+        [Required]
+        public int Sex { get; set; }
+
 
         [Required]
         [StringLength(50, ErrorMessage = "Password must contains at least {2} characters.", MinimumLength = 6)]
