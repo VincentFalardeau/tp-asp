@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFA.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,11 @@ namespace EFA
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Users", action = "Login", id = UrlParameter.Optional }
             );
+            if (OnlineUsers.GetSessionUser() != null)
+            {
+                OnlineUsers.RemoveSessionUser();
+            }
+           
         }
     }
 }

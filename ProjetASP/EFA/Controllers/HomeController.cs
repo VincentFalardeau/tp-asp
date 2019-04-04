@@ -12,11 +12,6 @@ namespace EFA.Controllers
         private DBEntities DB = new DBEntities();
         public ActionResult Index(UserView userView)
         {
-            if (OnlineUsers.GetSessionUser() == null)
-            {
-                return RedirectToAction("Login", "Users");
-                
-            }
             return View();
         }
 

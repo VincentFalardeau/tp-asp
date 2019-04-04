@@ -25,6 +25,7 @@ namespace EFA.Controllers
         [HttpPost]
         public ActionResult Subscribe(UserView userView)
         {
+            userView.Sex = 1;
             if (ModelState.IsValid)
             {
                 User userFound = DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault();
@@ -33,16 +34,26 @@ namespace EFA.Controllers
                     ModelState.AddModelError("UserName", "This username is already taken. Please choose another one.");
                     return View();
                 }
+
                 User user = new User
                 {
                     UserName = userView.UserName,
+                    FirstName = userView.FirstName,
+                    LastName = userView.LastName,
                     Password = userView.Password,
                     Admin = false,
-                    CreationDate = DateTime.Now
+                    CreationDate = DateTime.Now,
+                    Sex = userView.Sex,
+                    BirthDate = DateTime.Now,
+                    Email = "allo.bye@gmail.com"
                 };
+
                 DB.Users.Add(user);
                 DB.SaveChanges();
-                return Redirect("Home");
+
+                LogUser(DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault());
+                
+                return RedirectToAction("Index", "Bookmarks");
             }
             return View();
         }
@@ -71,18 +82,25 @@ namespace EFA.Controllers
                         return View();
                     }
                 }
-                OnlineUsers.AddSessionUser(userFound);
+                LogUser(userFound);
             }
             else
                 return View();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Bookmarks");
+        }
+
+        public void LogUser(User user)
+        {
+            ViewBag.UserName = user.UserName;
+            OnlineUsers.AddSessionUser(user);
+            ViewBag.UserName = OnlineUsers.GetSessionUser().UserName;
         }
 
         public ActionResult Logout()
         {
             OnlineUsers.RemoveSessionUser();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Users");
         }
     }
 }
