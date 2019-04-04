@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFA.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,14 @@ namespace EFA.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private DBEntities DB = new DBEntities();
+        public ActionResult Index(UserView userView)
         {
+            if (OnlineUsers.GetSessionUser() == null)
+            {
+                return RedirectToAction("Login", "Users");
+                
+            }
             return View();
         }
 
@@ -26,5 +33,7 @@ namespace EFA.Controllers
 
             return View();
         }
+
+        
     }
 }
