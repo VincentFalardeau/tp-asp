@@ -25,37 +25,47 @@ namespace EFA.Controllers
         [HttpPost]
         public ActionResult Subscribe(UserView userView)
         {
-            userView.Sex = 1;
+            User userFound = DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault();
+            if (userFound != null)
+            {
+                ModelState.AddModelError("UserName", "This username is already taken. Please choose another one.");
+                return View();
+
+            }
+            if (userView.Sex == SexType.Null)
+            {
+                ModelState.AddModelError("Sex", "You need to indicate your gender");
+                return View();
+
+            }
+
             if (ModelState.IsValid)
             {
-                User userFound = DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault();
-                if (userFound != null)
-                {
-                    ModelState.AddModelError("UserName", "This username is already taken. Please choose another one.");
-                    return View();
-                }
+                //User user = new User
+                //{
+                //    UserName = userView.UserName,
+                //    FirstName = userView.FirstName,
+                //    LastName = userView.LastName,
+                //    Password = userView.Password,
+                //    Admin = false,
+                //    CreationDate = DateTime.Now,
+                //    Sex = userView.Sex,
+                //    BirthDate = DateTime.Now,
+                //    Email = "allo.bye@gmail.com"
+                //};
 
-                User user = new User
-                {
-                    UserName = userView.UserName,
-                    FirstName = userView.FirstName,
-                    LastName = userView.LastName,
-                    Password = userView.Password,
-                    Admin = false,
-                    CreationDate = DateTime.Now,
-                    Sex = userView.Sex,
-                    BirthDate = DateTime.Now,
-                    Email = "allo.bye@gmail.com"
-                };
+                //DB.Users.Add(user);
+                //DB.SaveChanges();
 
-                DB.Users.Add(user);
-                DB.SaveChanges();
-
-                LogUser(DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault());
+                //LogUser(DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault());
                 
                 return RedirectToAction("Index", "Bookmarks");
             }
+
             return View();
+
+
+
         }
 
         public ActionResult Login()

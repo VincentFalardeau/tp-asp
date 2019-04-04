@@ -1,4 +1,6 @@
-﻿@model EFA.Models.UserView
+﻿@using EFA.Models
+@model EFA.Models.UserView
+
 
 @{
     ViewBag.Title = "Subscribe";
@@ -51,7 +53,6 @@
     <div class="form-group">
         @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.Kendo().DatePicker()
             @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
         </div>
@@ -62,6 +63,28 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Label("male")
+            @Html.RadioButtonFor(model => model.Sex, SexType.Male)
+            @Html.Label("female")
+            @Html.RadioButtonFor(model => model.Sex, SexType.Female)
+            @Html.Label("other")
+            @Html.RadioButtonFor(model => model.Sex, SexType.Other)
+            @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
+        </div>
+        
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
     </div>
 
