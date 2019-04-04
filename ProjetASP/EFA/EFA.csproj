@@ -144,7 +144,6 @@
     <Compile Include="Models\Bookmark.cs">
       <DependentUpon>ModelEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BookmarkItemView.cs" />
     <Compile Include="Models\Category.cs">
       <DependentUpon>ModelEntity.tt</DependentUpon>
     </Compile>

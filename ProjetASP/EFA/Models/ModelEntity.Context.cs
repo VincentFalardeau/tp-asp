@@ -146,7 +146,7 @@ namespace EFA.Models
                 Bookmark bookmarkToUpdate = DB.Bookmarks.Find(bookmark.Id);
                 if (bookmarkToUpdate != null)
                 {
-                    //bookmarkToUpdate.Update(bookmark);
+                    bookmarkToUpdate.Update(bookmark);
                     DB.Entry(bookmarkToUpdate).State = System.Data.Entity.EntityState.Modified;
                     DB.SaveChanges();
                     return DB.Bookmarks.Find(bookmarkToUpdate.Id);
@@ -169,46 +169,46 @@ namespace EFA.Models
         }
 
 
-        //public static List<BookmarkItemView> BookmarkList(this DBEntities DB, User viewer, string SortBy, bool ascendant)
-        //{
-        //    List<BookmarkItemView> bookmarkItems = new List<BookmarkItemView>();
-        //    foreach (Bookmark bookmark in DB.Bookmarks)
-        //    {
-        //        if ((viewer.Admin) || (viewer.Id == bookmark.UserId) || (bookmark.Shared))
-        //        {
-        //            bookmarkItems.Add(new BookmarkItemView(DB, bookmark, viewer));
-        //        }
-        //    }
-        //    switch (SortBy)
-        //    {
-        //        case "Name":
-        //            if (ascendant)
-        //                bookmarkItems = bookmarkItems.OrderBy(b => b.Name).ToList();
-        //            else
-        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.Name).ToList();
-        //            break;
-        //        case "Url":
-        //            if (ascendant)
-        //                bookmarkItems = bookmarkItems.OrderBy(b => b.Url).ToList();
-        //            else
-        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.Url).ToList();
-        //            break;
-        //        case "OwnerShip":
-        //            if (ascendant)
-        //                bookmarkItems = bookmarkItems.OrderBy(b => b.OwnerShip).ToList();
-        //            else
-        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.OwnerShip).ToList();
-        //            break;
-        //        case "Category":
-        //            if (ascendant)
-        //                bookmarkItems = bookmarkItems.OrderBy(b => b.Category).ToList();
-        //            else
-        //                bookmarkItems = bookmarkItems.OrderByDescending(b => b.Category).ToList();
-        //            break;
-        //    }
+        public static List<BookmarkItemView> BookmarkList(this DBEntities DB, User viewer, string SortBy, bool ascendant)
+        {
+            List<BookmarkItemView> bookmarkItems = new List<BookmarkItemView>();
+            foreach (Bookmark bookmark in DB.Bookmarks)
+            {
+                if ((viewer.Admin) || (viewer.Id == bookmark.UserId) || (bookmark.Shared))
+                {
+                    bookmarkItems.Add(new BookmarkItemView(DB, bookmark, viewer));
+                }
+            }
+            switch (SortBy)
+            {
+                case "Name":
+                    if (ascendant)
+                        bookmarkItems = bookmarkItems.OrderBy(b => b.Name).ToList();
+                    else
+                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.Name).ToList();
+                    break;
+                case "Url":
+                    if (ascendant)
+                        bookmarkItems = bookmarkItems.OrderBy(b => b.Url).ToList();
+                    else
+                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.Url).ToList();
+                    break;
+                case "OwnerShip":
+                    if (ascendant)
+                        bookmarkItems = bookmarkItems.OrderBy(b => b.OwnerShip).ToList();
+                    else
+                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.OwnerShip).ToList();
+                    break;
+                case "Category":
+                    if (ascendant)
+                        bookmarkItems = bookmarkItems.OrderBy(b => b.Category).ToList();
+                    else
+                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.Category).ToList();
+                    break;
+            }
 
-        //    return bookmarkItems;
-        //}
+            return bookmarkItems;
+        }
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,7 +231,7 @@ namespace EFA.Models
                 Category categoryToUpdate = DB.Categories.Find(category.Id);
                 if (categoryToUpdate != null)
                 {
-                    //categoryToUpdate.Update(category);
+                    categoryToUpdate.Update(category);
                     DB.Entry(categoryToUpdate).State = System.Data.Entity.EntityState.Modified;
                     DB.SaveChanges();
                     return DB.Categories.Find(categoryToUpdate.Id);
