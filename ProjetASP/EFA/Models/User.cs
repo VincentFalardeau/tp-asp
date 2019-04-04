@@ -30,8 +30,6 @@ namespace EFA.Models
         public int Sex { get; set; }
         public System.DateTime BirthDate { get; set; }
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bookmark> Bookmarks { get; set; }
