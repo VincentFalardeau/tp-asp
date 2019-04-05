@@ -107,6 +107,13 @@ namespace EFA.Controllers
             ViewBag.UserName = OnlineUsers.GetSessionUser().UserName;
         }
 
+        [HttpGet]
+
+        public ActionResult Profile()
+        {
+            return View(OnlineUsers.GetSessionUser());
+        }
+
         public ActionResult Logout()
         {
             OnlineUsers.RemoveSessionUser();

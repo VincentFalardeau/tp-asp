@@ -38,7 +38,7 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     @if (loggedUser != null)
                     {
-                        <li>@Html.ActionLink($"{loggedUser.UserName}", "Profil", "Users")</li>
+                        <li>@Html.ActionLink($"{loggedUser.UserName}", "Profile", "Users")</li>
                         <li>@Html.ActionLink("Logout", "Logout", "Users")</li>
                     }
                     else
@@ -55,7 +55,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Bookmarks Manager Application</p>
         </footer>
     </div>
 

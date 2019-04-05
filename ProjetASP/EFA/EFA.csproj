@@ -231,6 +231,7 @@
     <Content Include="Views\Users\Subscribe.cshtml" />
     <Content Include="Views\Bookmarks\Index.cshtml" />
     <Content Include="Views\Bookmarks\Create.cshtml" />
+    <Content Include="Views\Users\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

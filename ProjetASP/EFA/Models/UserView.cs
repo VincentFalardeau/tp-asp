@@ -77,6 +77,24 @@ namespace EFA.Models
         public static int Male = 1;
         public static int Female = 2;
         public static int Other = 3;
+
+        //public static string ToString(int sex)
+        //{
+        //    string sexStr = "Null";
+        //    if(sex == SexType.Male)
+        //    {
+        //        sexStr = "Male";
+        //    }
+        //    else if(sex == SexType.Female)
+        //    {
+        //        sexStr = "Female";
+        //    }
+        //    else if (sex == SexType.Other)
+        //    {
+        //        sexStr = "Other";
+        //    }
+        //    return sexStr;
+        //}
     }
 
 
