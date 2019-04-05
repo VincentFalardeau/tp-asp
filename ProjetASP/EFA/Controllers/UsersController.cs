@@ -76,6 +76,7 @@ namespace EFA.Controllers
         [HttpPost]
         public ActionResult Login(LoginView loginView)
         {
+
             if (ModelState.IsValid)
             {
                 User userFound = DB.Users.Where(u => u.UserName == loginView.UserName).FirstOrDefault();
@@ -155,6 +156,7 @@ namespace EFA.Controllers
 
         public ActionResult Profile(UserView userView)
         {
+            
             User userFound = DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault();
             if (userFound != null && userFound.UserName != OnlineUsers.GetSessionUser().UserName)
             {
@@ -164,7 +166,6 @@ namespace EFA.Controllers
             if (userView.Sex == SexType.Null)
             {
                 ModelState.AddModelError("Sex", "You need to indicate your gender");
-
             }
 
             if (ModelState.IsValid)
@@ -184,6 +185,8 @@ namespace EFA.Controllers
             }
 
             return View(new UserView(OnlineUsers.GetSessionUser()));
+
+            
         }
 
         public ActionResult Logout()

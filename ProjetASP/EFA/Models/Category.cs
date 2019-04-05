@@ -20,6 +20,12 @@ namespace EFA.Models
             this.Bookmarks = new HashSet<Bookmark>();
         }
 
+        public Category(string name, int id)
+        {
+            Name = name;
+            Id = id;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
 

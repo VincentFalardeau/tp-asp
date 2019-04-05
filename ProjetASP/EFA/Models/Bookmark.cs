@@ -11,6 +11,7 @@ namespace EFA.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
 
     public partial class Bookmark
@@ -94,6 +95,30 @@ namespace EFA.Models
         public int OwnerId { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public string newCategory { get; set; }
+
+        public int? GetIdFromName(string name)
+        {
+            DBEntities db = new DBEntities();
+            int id = 0;
+
+            try
+            {
+                id = db.Categories.Find(name).Id;
+            }
+            catch (Exception e)
+            {
+               foreach(Category c in db.Categories)
+               {
+                    id = c.Id + 1;
+               }
+
+                db.Categories.Add(new Category(name, id));
+
+            }
+
+            
+            return id;
+        }
     }
     public class BookmarkItemView
     {
