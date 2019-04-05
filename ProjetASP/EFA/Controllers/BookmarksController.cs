@@ -27,15 +27,9 @@ namespace EFA.Controllers
         public ActionResult Create(BookmarkView bookmarkview) {
 
             User loggedUser = OnlineUsers.GetSessionUser();
-                
-            Bookmark bookmark = new Bookmark
-            {
-                Name = bookmarkview.Name,
-                Url = bookmarkview.Url,
-                Shared = bookmarkview.Shared,
-                UserId = loggedUser.Id,
-                CategoryId = bookmarkview.GetIdFromName(bookmarkview.Name)
-            };
+
+            Bookmark bookmark = Bookmark.FromBookmarkView(bookmarkview);
+                        
             DB.Bookmarks.Add(bookmark);
 
             DB.SaveChanges();

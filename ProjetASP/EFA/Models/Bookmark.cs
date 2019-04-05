@@ -28,13 +28,38 @@ namespace EFA.Models
 
         public static Bookmark FromBookmarkView(BookmarkView bookmarkView)
         {
+            DBEntities db = new DBEntities();
+
             Bookmark bookmark = new Bookmark();
-            bookmark.Id = bookmarkView.Id;
             bookmark.Name = bookmarkView.Name;
             bookmark.Url = bookmarkView.Url;
             bookmark.Shared = bookmarkView.Shared;
             bookmark.UserId = bookmarkView.OwnerId;
-            bookmark.CategoryId = bookmarkView.CategoryId;
+
+            if (db.CategoryExist(bookmarkView.CategoryName))
+            {
+                bookmark.CategoryId = db.Categories.Find(bookmarkView.CategoryName).Id;
+            }
+            else
+            {
+                Category category = new Category();
+                int count = 0;
+                foreach(Category c in db.Categories)
+                {
+                    count++;
+                }
+                category.Id = count + 1;
+                category.Name = bookmarkView.CategoryName;
+
+                bookmark.CategoryId = category.Id;
+                bookmark.Name = category.Name;
+
+                db.Categories.Add(category);
+                db.SaveChanges();
+            }
+
+            
+
             return bookmark;
         }
         public BookmarkView CreateBookmarkView()
@@ -95,6 +120,8 @@ namespace EFA.Models
         public int OwnerId { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public string newCategory { get; set; }
+
+        public string CategoryName { get; set; }
 
         public int? GetIdFromName(string name)
         {
