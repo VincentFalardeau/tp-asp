@@ -31,19 +31,35 @@ namespace EFA.Models
             DBEntities db = new DBEntities();
 
             Bookmark bookmark = new Bookmark();
+            int count = 0;
+            foreach(Bookmark b in db.Bookmarks)
+            {
+                count++;
+            }
+            bookmark.Id = count + 1;
+
             bookmark.Name = bookmarkView.Name;
             bookmark.Url = bookmarkView.Url;
             bookmark.Shared = bookmarkView.Shared;
-            bookmark.UserId = bookmarkView.OwnerId;
+            bookmark.UserId = OnlineUsers.GetSessionUser().Id;
 
             if (db.CategoryExist(bookmarkView.CategoryName))
             {
-                bookmark.CategoryId = db.Categories.Find(bookmarkView.CategoryName).Id;
+                foreach(Category c in db.Categories)
+                {
+                    if(c.Name == bookmarkView.CategoryName)
+                    {
+                        bookmark.CategoryId = c.Id;
+                        break;
+                    }
+                }
+                
+                //bookmark.CategoryId = db.Categories.Find(bookmarkView.CategoryName).Id;
             }
             else
             {
                 Category category = new Category();
-                int count = 0;
+                count = 0;
                 foreach(Category c in db.Categories)
                 {
                     count++;
