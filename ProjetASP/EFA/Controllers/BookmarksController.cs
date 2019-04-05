@@ -38,9 +38,24 @@ namespace EFA.Controllers
 
 
 
-        public ActionResult Edit(int Id) {
-            Bookmark bookmark = DB.Bookmarks.Where(x => x.Id == Id).FirstOrDefault();
-            return View(bookmark);
+        public ActionResult Edit(BookmarkView bookmarkView)
+        {
+            if (ModelState.IsValid)
+            {
+                Bookmark bookmark = new Bookmark();
+                bookmark.Id = bookmarkView.Id;
+                bookmark.Name = bookmarkView.Name;
+                bookmark.Shared = bookmarkView.Shared;
+                bookmark.Url = bookmarkView.Url;
+                bookmark.UserId = bookmarkView.OwnerId;
+                bookmark.CategoryId = bookmarkView.CategoryId;
+
+
+                DB.Update(bookmark);
+
+                DB.SaveChanges();
+            }
+            return View(bookmarkView);
         }
 
         //[HttpPost]

@@ -232,6 +232,7 @@
     <Content Include="Views\Bookmarks\Index.cshtml" />
     <Content Include="Views\Bookmarks\Create.cshtml" />
     <Content Include="Views\Users\Profile.cshtml" />
+    <Content Include="Views\Bookmarks\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
