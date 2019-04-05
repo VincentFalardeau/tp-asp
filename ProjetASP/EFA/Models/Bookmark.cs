@@ -10,6 +10,7 @@
 namespace EFA.Models
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
@@ -45,14 +46,8 @@ namespace EFA.Models
 
             if (db.CategoryExist(bookmarkView.CategoryName))
             {
-                foreach(Category c in db.Categories)
-                {
-                    if(c.Name == bookmarkView.CategoryName)
-                    {
-                        bookmark.CategoryId = c.Id;
-                        break;
-                    }
-                }
+                bookmark.CategoryId = db.Categories.Where(x => x.Name == bookmarkView.CategoryName).First().Id;
+                
                 
                 //bookmark.CategoryId = db.Categories.Find(bookmarkView.CategoryName).Id;
             }
