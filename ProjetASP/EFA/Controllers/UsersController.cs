@@ -95,7 +95,10 @@ namespace EFA.Controllers
                 LogUser(userFound);
             }
             else
+            {
                 return View();
+            }
+                
 
             return RedirectToAction("Index", "Bookmarks");
         }
@@ -107,10 +110,26 @@ namespace EFA.Controllers
             ViewBag.UserName = OnlineUsers.GetSessionUser().UserName;
         }
 
-        [HttpGet]
-
-        public ActionResult Profile()
+        public ActionResult Profile(User user)
         {
+            User userFound = DB.Users.Where(u => u.UserName == user.UserName).FirstOrDefault();
+
+            if (userFound != null && userFound.UserName != OnlineUsers.GetSessionUser().UserName)
+            {
+                ModelState.AddModelError("UserName", "This username is already taken. Please choose another one.");
+            }
+            if (user.Sex == SexType.Null)
+            {
+                ModelState.AddModelError("Sex", "You need to indicate your gender");
+            }
+
+            if (ModelState.IsValid)
+            {
+                
+
+                DB.Update(user);
+            }
+
             return View(OnlineUsers.GetSessionUser());
         }
 
