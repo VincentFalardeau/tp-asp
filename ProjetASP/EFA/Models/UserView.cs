@@ -9,7 +9,11 @@ namespace EFA.Models
     public class UserView
     {
         private const string REGEX_Identification = @"^((?!^Name$)[-a-zA-Z0-9àâäçèêëéìîïòôöùûüÿñÀÂÄÇÈÊËÉÌÎÏÒÔÖÙÛÜ_. '])+$";
+        private User user;
+
         //private const string REGEX_Date = @"^([0-2][0-9]|[3][0-1])-([01][012]|0[1-9])-([0-9][0-9][0-9][0-9])$";     
+
+        public int Id { get; set; }
 
         [Required]
         public string UserName { get; set; }
@@ -58,6 +62,19 @@ namespace EFA.Models
             LastName = "";
 
             
+        }
+
+        public UserView(User user)
+        {
+            this.Id = user.Id;
+            this.UserName = user.UserName;
+            this.FirstName = user.FirstName;
+            this.LastName = user.LastName;
+            this.Sex = user.Sex;
+            this.BirthDate = user.BirthDate;
+            this.Email = user.Email;
+            this.Password = user.Password;
+           
         }
     }
 
