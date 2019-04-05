@@ -33,5 +33,17 @@ namespace EFA.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bookmark> Bookmarks { get; set; }
+
+        public void Update(User user)
+        {
+            this.UserName = user.UserName;
+            this.FirstName = user.FirstName;
+            this.LastName = user.LastName;
+            this.Sex = user.Sex;
+            this.BirthDate = user.BirthDate;
+            this.Email = user.Email;
+            this.Password = user.Password;
+            this.Admin = user.Admin;
+        }
     }
 }

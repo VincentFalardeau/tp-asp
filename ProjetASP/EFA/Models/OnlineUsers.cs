@@ -40,6 +40,14 @@ namespace EFA.Models
             }
             return false;
         }
+
+        public static void UpdateSessionUser(User user)
+        {
+            if(((User)HttpContext.Current.Session["User"]).Id == user.Id)
+            {
+                HttpContext.Current.Session["User"] = user;
+            }
+        }
     }
 
 }

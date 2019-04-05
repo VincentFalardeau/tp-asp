@@ -123,11 +123,31 @@ namespace EFA.Controllers
                 ModelState.AddModelError("Sex", "You need to indicate your gender");
             }
 
+            if(user.Password == "")
+            {
+                ModelState.AddModelError("Password", "A password is required");
+            }
+
+            bool invalidEmail = false;
+            try
+            {
+                invalidEmail = new System.Net.Mail.MailAddress(user.Email) == null;
+            }
+            catch(Exception e)
+            {
+                invalidEmail = true;
+            }
+            
+            if (invalidEmail)
+            {
+                ModelState.AddModelError("Email", "Invalid email address");
+            }
+
             if (ModelState.IsValid)
             {
-                
-
                 DB.Update(user);
+
+                OnlineUsers.UpdateSessionUser(DB.Users.Find(user.Id));
             }
 
             return View(OnlineUsers.GetSessionUser());

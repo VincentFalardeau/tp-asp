@@ -56,7 +56,7 @@ namespace EFA.Models
                 User userToUpdate = DB.Users.Find(user.Id);
                 if (userToUpdate != null)
                 {
-                    //userToUpdate.Update(user);
+                    userToUpdate.Update(user);
                     DB.Entry(userToUpdate).State = System.Data.Entity.EntityState.Modified;
                     DB.SaveChanges();
                     return DB.Users.Find(userToUpdate.Id);
