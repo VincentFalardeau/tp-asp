@@ -41,24 +41,24 @@ namespace EFA.Controllers
 
             if (ModelState.IsValid)
             {
-                //User user = new User
-                //{
-                //    UserName = userView.UserName,
-                //    FirstName = userView.FirstName,
-                //    LastName = userView.LastName,
-                //    Password = userView.Password,
-                //    Admin = false,
-                //    CreationDate = DateTime.Now,
-                //    Sex = userView.Sex,
-                //    BirthDate = DateTime.Now,
-                //    Email = "allo.bye@gmail.com"
-                //};
+                User user = new User
+                {
+                    UserName = userView.UserName,
+                    FirstName = userView.FirstName,
+                    LastName = userView.LastName,
+                    Password = userView.Password,
+                    Admin = false,
+                    CreationDate = DateTime.Now,
+                    Sex = userView.Sex,
+                    BirthDate = userView.BirthDate,
+                    Email = userView.Email
+                };
 
-                //DB.Users.Add(user);
-                //DB.SaveChanges();
+                DB.Users.Add(user);
+                DB.SaveChanges();
 
-                //LogUser(DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault());
-                
+                LogUser(DB.Users.Where(u => u.UserName == userView.UserName).FirstOrDefault());
+
                 return RedirectToAction("Index", "Bookmarks");
             }
 
