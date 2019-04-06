@@ -136,6 +136,8 @@ namespace EFA.Models
         public bool Shared { get; set; }
 
         public int OwnerId { get; set; }
+
+        public string OwnerName { get; set; }
         public Nullable<int> CategoryId { get; set; } = null;
         public string newCategory { get; set; }
 
@@ -165,6 +167,34 @@ namespace EFA.Models
 
             
             return id;
+        }
+
+        public static List<BookmarkView> GetDBCollection()
+        {
+            DBEntities db = new DBEntities();
+            List<BookmarkView> collection = new List<BookmarkView>() ;
+            foreach(Bookmark b in db.Bookmarks.ToList())
+            {
+                string strCat;
+                try
+                {
+                    strCat = db.Categories.Where(x => x.Id == b.CategoryId).First().Name;
+                }
+                catch(Exception e)
+                {
+                    strCat = "";
+                }
+                
+                collection.Add(new BookmarkView {
+                    Id = b.Id,
+                    Name = b.Name,
+                    CategoryName = strCat,
+                    Shared = b.Shared,
+                    OwnerName = db.Users.Where(x => x.Id == b.UserId).First().UserName,
+                    Url = b.Url
+                    });
+            }
+            return collection;
         }
     }
     public class BookmarkItemView

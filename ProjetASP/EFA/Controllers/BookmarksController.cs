@@ -15,7 +15,8 @@ namespace EFA.Controllers
         // GET: Bookmarks
         public ActionResult Index()
         {
-            return View(DB.Bookmarks.ToList());
+            List<BookmarkView> bookmarkViews = BookmarkView.GetDBCollection();
+            return View(bookmarkViews);
         }
 
 
@@ -48,8 +49,8 @@ namespace EFA.Controllers
                 bookmark.Name = bookmarkView.Name;
                 bookmark.Shared = bookmarkView.Shared;
                 bookmark.Url = bookmarkView.Url;
-                bookmark.UserId = bookmarkView.OwnerId;
-                bookmark.CategoryId = bookmarkView.CategoryId;
+                bookmark.UserId = DB.Users.Where(x => x.UserName == bookmarkView.OwnerName).First().Id;
+                bookmark.CategoryId = DB.Categories.Where(x => x.Name == bookmarkView.CategoryName).First().Id;
 
 
                 DB.Update(bookmark);
