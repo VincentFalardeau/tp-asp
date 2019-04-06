@@ -44,30 +44,37 @@ namespace EFA.Models
             bookmark.Shared = bookmarkView.Shared;
             bookmark.UserId = OnlineUsers.GetSessionUser().Id;
 
-            if (db.CategoryExist(bookmarkView.CategoryName))
+          
+
+            if(bookmarkView.CategoryId != null)
             {
-                bookmark.CategoryId = db.Categories.Where(x => x.Name == bookmarkView.CategoryName).First().Id;
-                
-                
-                //bookmark.CategoryId = db.Categories.Find(bookmarkView.CategoryName).Id;
+                bookmark.CategoryId = bookmarkView.CategoryId;
             }
-            else
-            {
-                Category category = new Category();
-                count = 0;
-                foreach(Category c in db.Categories)
+            else 
+                if (db.CategoryExist(bookmarkView.CategoryName))
                 {
-                    count++;
+                    bookmark.CategoryId = db.Categories.Where(x => x.Name == bookmarkView.CategoryName).First().Id;
+                
+                
+                    //bookmark.CategoryId = db.Categories.Find(bookmarkView.CategoryName).Id;
                 }
-                category.Id = count + 1;
-                category.Name = bookmarkView.CategoryName;
+                else
+                {
+                    Category category = new Category();
+                    count = 0;
+                    foreach(Category c in db.Categories)
+                    {
+                        count++;
+                    }
+                    category.Id = count + 1;
+                    category.Name = bookmarkView.CategoryName;
 
-                bookmark.CategoryId = category.Id;
-                bookmark.Name = category.Name;
+                    bookmark.CategoryId = category.Id;
+                    bookmark.Name = category.Name;
 
-                db.Categories.Add(category);
-                db.SaveChanges();
-            }
+                    db.Categories.Add(category);
+                    db.SaveChanges();
+                }
 
             
 
@@ -129,7 +136,7 @@ namespace EFA.Models
         public bool Shared { get; set; }
 
         public int OwnerId { get; set; }
-        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> CategoryId { get; set; } = null;
         public string newCategory { get; set; }
 
         public string CategoryName { get; set; }

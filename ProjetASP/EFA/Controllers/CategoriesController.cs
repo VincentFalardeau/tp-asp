@@ -100,7 +100,7 @@ namespace EFA.Controllers
                 {
                     foreach (Bookmark bookmark in DB.Bookmarks.Where(b => b.CategoryId == categoryToDelete.Id))
                     {
-                        bookmark.CategoryId = 0;
+                        bookmark.CategoryId = 1;
                         DB.Entry(bookmark).State = System.Data.Entity.EntityState.Modified;
                     }
                     DB.Entry(categoryToDelete).State = System.Data.Entity.EntityState.Deleted;
