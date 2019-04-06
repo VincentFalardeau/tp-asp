@@ -20,6 +20,7 @@ namespace EFA.Controllers
 
 
         public ActionResult Create() {
+            ViewBag.Categories = new DBEntities().Categories;
             return View();
         }
 

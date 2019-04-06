@@ -34,6 +34,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @if (loggedUser != null)
+                    {
+                    <li> @Html.ActionLink("Categories", "Index", "Categories")</li>
+                    }
+                    
                     <li>@Html.ActionLink("À propos de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     @if (loggedUser != null)
@@ -46,7 +51,7 @@
                         <li>@Html.ActionLink("Subscribe", "Subscribe", "Users")</li>
                         <li>@Html.ActionLink("Login", "Login", "Users")</li>
                     }
-                </ul>
+                    </ul>
             </div>
 
         </div>

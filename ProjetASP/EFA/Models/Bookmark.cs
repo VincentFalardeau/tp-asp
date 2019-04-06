@@ -134,6 +134,8 @@ namespace EFA.Models
 
         public string CategoryName { get; set; }
 
+        public IEnumerable<Category> categories = new DBEntities().Categories;
+
         public int? GetIdFromName(string name)
         {
             DBEntities db = new DBEntities();

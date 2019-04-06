@@ -11,6 +11,7 @@ namespace EFA.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class Category
     {
@@ -27,6 +28,8 @@ namespace EFA.Models
         }
 
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
