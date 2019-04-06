@@ -32,6 +32,8 @@ namespace EFA.Models
         public virtual DbSet<User> Users { get; set; }
 
         public System.Data.Entity.DbSet<EFA.Models.CategorieView> CategorieViews { get; set; }
+
+        public System.Data.Entity.DbSet<EFA.Models.BookmarkView> BookmarkViews { get; set; }
     }
 
     public static class BookmarksDBEntities_DAL
