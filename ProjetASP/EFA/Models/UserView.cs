@@ -6,6 +6,9 @@ using System.Web;
 
 namespace EFA.Models
 {
+
+
+
     public class UserView
     {
         private const string REGEX_Identification = @"^((?!^Name$)[-a-zA-Z0-9àâäçèêëéìîïòôöùûüÿñÀÂÄÇÈÊËÉÌÎÏÒÔÖÙÛÜ_. '])+$";
@@ -78,6 +81,9 @@ namespace EFA.Models
         }
     }
 
+
+
+
     public class LoginView
     {
         [Required]
@@ -88,7 +94,10 @@ namespace EFA.Models
     }
 
 
-    public static class SexType
+
+
+
+    public class SexType
     {
         public static int Null = 0;
         public static int Male = 1;

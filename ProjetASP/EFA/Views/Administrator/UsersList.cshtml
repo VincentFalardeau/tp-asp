@@ -1,0 +1,79 @@
+﻿@model IEnumerable<EFA.Models.User>
+
+@using EFA.Models;
+@{
+    ViewBag.Title = "UsersList";
+    int sexChoice = (int)Session["UserFilterBySex"];
+}
+
+<h2>UsersList</h2>
+
+<table class="table">
+    <tr>
+        <th>
+           Online
+        </th>
+        <th>
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.FirstName).ToString(), "User", "FirstName")
+        </th>
+        <th>
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.CreationDate).ToString(), "User", "CreationDate")
+        </th>
+        <th>
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.Sex).ToString(), "User", "Sex")
+
+        </th>
+        <th>
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.BirthDate).ToString(), "User", "BirthDate")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+
+        <td>
+            @item.CreationDate.ToLongDateString()
+        </td>
+        <td>
+            @if (OnlineUsers.IsOnLine(item.Id))
+            {
+                <img style="height: 25px; width: 25px" src="~/Content/UI_Images/OnLine.png" />
+            }
+            else
+            {
+                <img style="height: 25px; width: 25px" src="~/Content/UI_Images/OffLine.png" />
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+
+        <td>
+
+            @if (item.Sex == 1)
+            {
+                <span>Male</span>
+            }
+            else if (item.Sex == 2)
+            {
+                <span>Female</span>
+            }
+            else if (item.Sex == 3)
+            {
+                <span>Other</span>
+            }
+
+
+        </td>
+        <td>
+            @item.BirthDate.ToLongDateString()
+        </td>
+        <td>
+
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+    }
+
+</table>

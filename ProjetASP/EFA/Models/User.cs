@@ -11,7 +11,8 @@ namespace EFA.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -45,5 +46,28 @@ namespace EFA.Models
             this.Password = user.Password;
             this.Admin = user.Admin;
         }
+
+
+        public string SexToString(int id)
+        {
+            string sex = "Null";
+
+            switch (id)
+            {
+                case 1:
+                    sex = "Male";
+                    break;
+                case 2:
+                    sex = "Female";
+                    break;
+                case 3:
+                    sex = "Other";
+                    break;
+            }
+            return sex;
+        }
+
+
+
     }
 }

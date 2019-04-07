@@ -1,0 +1,45 @@
+﻿@helper IconAction(System.Web.Mvc.UrlHelper Url, string Action, string Icon, string TooltipMessage, string ToolTipPlacement = "bottom")
+    {
+        <a href="@Url.Action(Action)">
+            <img src='@Url.Content(@"~/Content/UI_Images/" + Icon + ".png")'
+                 class="Icon" data-toggle="tooltip"
+                 data-placement="@ToolTipPlacement"
+                 title="@TooltipMessage" />
+        </a>
+}
+
+@helper IconControllerAction(System.Web.Mvc.UrlHelper Url, string Controller, string Action, string Icon, string TooltipMessage, string ToolTipPlacement = "bottom")
+    {
+        <a href="@Url.Action(Action, Controller)">
+            <img src='@Url.Content(@"~/Content/UI_Images/" + Icon + ".png")'
+                 class="Icon" data-toggle="tooltip"
+                 data-placement="@ToolTipPlacement"
+                 title="@TooltipMessage" />
+        </a>
+}
+
+@helper SortAction(System.Web.Mvc.UrlHelper Url, string Action, string fieldCaption, string RecordName, string fieldName)
+    {
+        var sortIcon = Url.Content("~/Content/UI_Images/Sort.png");
+        var sortAscIcon = Url.Content("~/Content/UI_Images/SortAsc.png");
+        var sortDescIcon = Url.Content("~/Content/UI_Images/SortDesc.png");
+
+        <a href="@Url.Action(Action, new { by = fieldName })" style="float:left">
+            @if ((string)Session[RecordName + "SortBy"] == fieldName)
+            {
+                if ((bool)Session[RecordName + "SortAscendant"])
+                {
+                    <img src='@sortAscIcon' data-toggle="tooltip" data-placement="bottom" title="Trier" style="padding-right:4px;"/>
+                }
+                else
+                {
+                    <img src='@sortDescIcon' data-toggle="tooltip" data-placement="bottom" title="Trier" style="padding-right:4px;"/>
+                }
+            }
+            else
+            {
+                <img src='@sortIcon' data-toggle="tooltip" data-placement="bottom" title="Trier" style="padding-right:4px;"/>
+            }
+        </a>
+        @(new HtmlString(fieldCaption))
+}
