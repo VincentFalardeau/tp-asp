@@ -173,14 +173,25 @@ namespace EFA.Models
         }
 
 
-        public static List<BookmarkItemView> BookmarkList(this DBEntities DB, User viewer, string SortBy, bool ascendant)
+        public static List<BookmarkView> BookmarkList(this DBEntities DB, User viewer, string SortBy, bool ascendant)
         {
-            List<BookmarkItemView> bookmarkItems = new List<BookmarkItemView>();
+            List<BookmarkView> bookmarkItems = new List<BookmarkView>();
             foreach (Bookmark bookmark in DB.Bookmarks)
             {
                 if ((viewer.Admin) || (viewer.Id == bookmark.UserId) || (bookmark.Shared))
                 {
-                    bookmarkItems.Add(new BookmarkItemView(DB, bookmark, viewer));
+                    bookmarkItems.Add(new BookmarkView
+                    {
+                        Id = bookmark.Id,
+                        Name = bookmark.Name,
+                        Shared = bookmark.Shared,
+                        OwnerId = bookmark.UserId,
+                        OwnerName = bookmark.User.FirstName + " " + bookmark.User.LastName,
+                        CategoryName = bookmark.Category == null ? "" : bookmark.Category.Name,
+                        Url = bookmark.Url
+
+
+                    });
                 }
             }
             switch (SortBy)
@@ -197,17 +208,17 @@ namespace EFA.Models
                     else
                         bookmarkItems = bookmarkItems.OrderByDescending(b => b.Url).ToList();
                     break;
-                case "OwnerShip":
+                case "OwnerName":
                     if (ascendant)
-                        bookmarkItems = bookmarkItems.OrderBy(b => b.OwnerShip).ToList();
+                        bookmarkItems = bookmarkItems.OrderBy(b => b.OwnerName).ToList();
                     else
-                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.OwnerShip).ToList();
+                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.OwnerName).ToList();
                     break;
                 case "Category":
                     if (ascendant)
-                        bookmarkItems = bookmarkItems.OrderBy(b => b.Category).ToList();
+                        bookmarkItems = bookmarkItems.OrderBy(b => b.CategoryName).ToList();
                     else
-                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.Category).ToList();
+                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.CategoryName).ToList();
                     break;
             }
 

@@ -10,13 +10,80 @@ namespace EFA.Controllers
     public class BookmarksController : Controller
     {
 
+
+
+    
+
        private DBEntities DB = new DBEntities();
+
+        #region Sort and filters
+        private void InitSessionSortAndFilter()
+        {
+            if (Session["BookmarkSortBy"] == null)
+            {
+                Session["BookmarkSortBy"] = "Name";
+                Session["BookmarkSortAscendant"] = true;
+            }
+
+            if (Session["BookmarkFilterByOwnership"] == null)
+            {
+                Session["BookmarkFilterByOwnership"] = "";
+            }
+
+            if (Session["BookmarkFilterByCategory"] == null)
+            {
+                Session["BookmarkFilterByCategory"] = -1;
+            }
+        }
+
+        public ActionResult Sort(string by)
+        {
+            if (by == (string)Session["BookmarkSortBy"])
+                Session["BookmarkSortAscendant"] = !(bool)Session["BookmarkSortAscendant"];
+            else
+                Session["BookmarkSortAscendant"] = true;
+
+            Session["BookmarkSortBy"] = by;
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult FilterOwnership(int Ownership)
+        {
+            Session["BookmarkFilterByOwnership"] = (Ownership == -1 ? -1 : Ownership);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult FilterCategory(int Category)
+        {
+            Session["BookmarkFilterByCategory"] = Category;
+            return RedirectToAction("Index");
+        }
+        #endregion
+
+
+
+
 
         // GET: Bookmarks
         public ActionResult Index()
         {
-            List<BookmarkView> bookmarkViews = BookmarkView.GetDBCollection();
-            return View(bookmarkViews);
+            User loggedUser = OnlineUsers.GetSessionUser();
+            InitSessionSortAndFilter();
+            List<BookmarkView> bookmarks = DB.BookmarkList(loggedUser, (string)Session["BookmarkSortBy"], (bool)Session["BookmarkSortAscendant"]);
+
+          
+
+            int categorieFilter = (int)Session["BookmarkFilterByCategory"];
+           ViewBag.Categories = DB.Categories;
+
+            if (categorieFilter != -1)
+            {
+                string categorie_name = DB.Categories.Where(x => x.Id == categorieFilter).FirstOrDefault().Name.ToString();
+                return View(bookmarks.Where(x => x.CategoryName == categorie_name).ToList());
+            }
+                
+
+            return View(bookmarks);
         }
 
 
@@ -49,7 +116,7 @@ namespace EFA.Controllers
                 bookmark.Name = bookmarkView.Name;
                 bookmark.Shared = bookmarkView.Shared;
                 bookmark.Url = bookmarkView.Url;
-                bookmark.UserId = DB.Users.Where(x => x.UserName == bookmarkView.OwnerName).First().Id;
+                bookmark.UserId = DB.Users.Where(x => x.UserName == bookmarkView.OwnerName).FirstOrDefault().Id;
                 bookmark.CategoryId = Bookmark.GetCategoryIdFromBookmarkView(bookmarkView);
 
 

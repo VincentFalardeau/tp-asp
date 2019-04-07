@@ -32,9 +32,7 @@
     {
     <tr>
 
-        <td>
-            @item.CreationDate.ToLongDateString()
-        </td>
+
         <td>
             @if (OnlineUsers.IsOnLine(item.Id))
             {
@@ -48,7 +46,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
         </td>
-
+        <td>
+            @item.CreationDate.ToLongDateString()
+        </td>
         <td>
 
             @if (item.Sex == 1)

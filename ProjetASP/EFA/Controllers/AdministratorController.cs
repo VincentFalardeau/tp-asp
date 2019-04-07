@@ -103,10 +103,29 @@ namespace EFA.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Delete(UserView userView)
+        public ActionResult Delete(int Id)
         {
             DBEntities DB = new DBEntities();
-            return View(DB.Users.Where(x => x.Id == userView.Id).Include(x => x.Bookmarks).FirstOrDefault());
+            return View(DB.Users.Where(x => x.Id == Id).Include(x => x.Bookmarks).FirstOrDefault());
+        }
+
+
+        [HttpPost]
+        public ActionResult Delete(User UserView)
+        {
+            DBEntities DB = new DBEntities();
+            List<Bookmark> Bookmarks = DB.Bookmarks.Where(x => x.UserId == UserView.Id).ToList();
+
+            foreach (var bookmark in Bookmarks)
+            {
+                DB.Delete(bookmark);
+
+            }
+            DB.Delete(DB.Users.Where(x => x.Id == UserView.Id).FirstOrDefault());
+
+            DB.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

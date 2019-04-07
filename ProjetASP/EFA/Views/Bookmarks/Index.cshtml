@@ -4,6 +4,8 @@
 
 @{
     ViewBag.Title = "Index";
+    IEnumerable<Category> categories = ViewBag.Categories;
+    int categoryChoice = (int)Session["BookmarkFilterByCategory"];
 }
 
 <h2>Index</h2>
@@ -14,46 +16,63 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.Name).ToString(), "Bookmark", "Name")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Url)
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.Url).ToString(), "Bookmark", "Url")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OwnerName)
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.CategoryName).ToString(), "Bookmark", "Category")
+            <select id="categorieFilterList">
+                <option value="-1" @(categoryChoice == -1 ? "selected" : "")>All categories</option>
+                @foreach (Category categorie in categories)
+                {
+                    <option value="@((int)categorie.Id)" @(categoryChoice == (int)categorie.Id ? "selected" : "")>@categorie.Name</option>
+                }
+            </select>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Shared)
+            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.OwnerName).ToString(), "Bookmark", "OwnerName")
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </th>
+
+
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Url)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OwnerName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Shared)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", item) |
-            @Html.ActionLink("Details", "Details", item) |
-            @Html.ActionLink("Delete", "Delete", item)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td style="max-width: 400px; overflow-wrap: break-word">
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerName)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", item) |
+                @Html.ActionLink("Details", "Details", item) |
+                @Html.ActionLink("Delete", "Delete", item)
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+<script>
+        document.addEventListener('DOMContentLoaded', AttachEventHandlers);
+
+        function AttachEventHandlers() {
+            document.querySelector('#categorieFilterList').addEventListener('change', (event) => {
+                document.location = "@Url.Action("FilterCategory")" + "?Category=" + event.target.value;
+            });
+        }
+
+</script>
