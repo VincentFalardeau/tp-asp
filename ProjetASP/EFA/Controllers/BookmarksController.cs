@@ -60,6 +60,36 @@ namespace EFA.Controllers
             return View(bookmarkView);
         }
 
+        public ActionResult Details(BookmarkView bookmarkView)
+        {
+            return View(bookmarkView);
+        }
+
+        public ActionResult Delete(BookmarkView bookmarkView)
+        {
+            Bookmark bookmark = new Bookmark();
+            bookmark.Id = bookmarkView.Id;
+            bookmark.Name = bookmarkView.Name;
+            bookmark.Shared = bookmarkView.Shared;
+            bookmark.Url = bookmarkView.Url;
+            bookmark.UserId = DB.Users.Where(x => x.UserName == bookmarkView.OwnerName).First().Id;
+            bookmark.CategoryId = Bookmark.GetCategoryIdFromBookmarkView(bookmarkView);
+
+            return View(bookmark);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(Bookmark bookmark)
+        {
+            DB.Delete(bookmark);
+
+            DB.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+       
+
         //[HttpPost]
         //public ActionResult Edit(Bookmark bookmark) {
         //    DB.Bookmarks.Update(bookmark);
