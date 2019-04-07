@@ -21,7 +21,7 @@ namespace EFA.Controllers
 
 
         public ActionResult Create() {
-            ViewBag.Categories = new DBEntities().Categories;
+            
             return View();
         }
 
@@ -50,7 +50,7 @@ namespace EFA.Controllers
                 bookmark.Shared = bookmarkView.Shared;
                 bookmark.Url = bookmarkView.Url;
                 bookmark.UserId = DB.Users.Where(x => x.UserName == bookmarkView.OwnerName).First().Id;
-                bookmark.CategoryId = DB.Categories.Where(x => x.Name == bookmarkView.CategoryName).First().Id;
+                bookmark.CategoryId = Bookmark.GetCategoryIdFromBookmarkView(bookmarkView);
 
 
                 DB.Update(bookmark);

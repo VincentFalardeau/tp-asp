@@ -17,6 +17,7 @@ namespace EFA.Models
 
     public partial class Bookmark
     {
+        
         public int Id { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
@@ -30,56 +31,77 @@ namespace EFA.Models
         public static Bookmark FromBookmarkView(BookmarkView bookmarkView)
         {
             DBEntities db = new DBEntities();
-
             Bookmark bookmark = new Bookmark();
-            int count = 0;
-            foreach(Bookmark b in db.Bookmarks)
-            {
-                count++;
-            }
-            bookmark.Id = count + 1;
+
+            bookmark.Id = FindNextId();
 
             bookmark.Name = bookmarkView.Name;
             bookmark.Url = bookmarkView.Url;
             bookmark.Shared = bookmarkView.Shared;
             bookmark.UserId = OnlineUsers.GetSessionUser().Id;
 
-          
-
-            if(bookmarkView.CategoryId != null)
-            {
-                bookmark.CategoryId = bookmarkView.CategoryId;
-            }
-            else 
-                if (db.CategoryExist(bookmarkView.CategoryName))
-                {
-                    bookmark.CategoryId = db.Categories.Where(x => x.Name == bookmarkView.CategoryName).First().Id;
-                
-                
-                    //bookmark.CategoryId = db.Categories.Find(bookmarkView.CategoryName).Id;
-                }
-                else
-                {
-                    Category category = new Category();
-                    count = 0;
-                    foreach(Category c in db.Categories)
-                    {
-                        count++;
-                    }
-                    category.Id = count + 1;
-                    category.Name = bookmarkView.CategoryName;
-
-                    bookmark.CategoryId = category.Id;
-                    bookmark.Name = category.Name;
-
-                    db.Categories.Add(category);
-                    db.SaveChanges();
-                }
-
-            
+            bookmark.CategoryId = GetCategoryIdFromBookmarkView(bookmarkView);
 
             return bookmark;
         }
+
+        public static int FindNextId()
+        {
+            DBEntities db = new DBEntities();
+            int count = 0;
+            foreach (Bookmark b in db.Bookmarks)
+            {
+                count++;
+            }
+            return count + 1;
+        }
+
+        public static int? GetCategoryIdFromBookmarkView(BookmarkView bookmarkView)
+        {
+            DBEntities db = new DBEntities();
+
+            int? id = null;
+
+            if (bookmarkView.CategoryId.HasValue)
+            {
+                id = bookmarkView.CategoryId;
+            }
+            else if (db.CategoryExist(bookmarkView.CategoryName))
+            {
+                id = db.Categories.Where(x => x.Name == bookmarkView.CategoryName).First().Id;
+            }
+            else if(!bookmarkView.CategoryId.HasValue && bookmarkView.CategoryName == null)
+            {
+                id = null;
+            }
+            else
+            {
+                id = CreateCategory(bookmarkView);
+            }
+            return id;
+        }
+
+        public static int CreateCategory(BookmarkView bookmarkView)
+        {
+            DBEntities db = new DBEntities();
+            Category category = new Category();
+
+            int count = 0;
+            foreach (Category c in db.Categories)
+            {
+                count++;
+            }
+            category.Id = count + 1;
+
+            category.Name = bookmarkView.CategoryName;
+
+            db.Categories.Add(category);
+            db.SaveChanges();
+
+            return category.Id;
+        }
+
+
         public BookmarkView CreateBookmarkView()
         {
             BookmarkView bookmarkView = new BookmarkView();
@@ -195,6 +217,16 @@ namespace EFA.Models
                     });
             }
             return collection;
+        }
+
+        public bool HasCategory()
+        {
+            bool hasCategory = false;
+            if(this.CategoryId.HasValue || this.CategoryName != "")
+            {
+                hasCategory = true;
+            }
+            return hasCategory;
         }
     }
     public class BookmarkItemView
