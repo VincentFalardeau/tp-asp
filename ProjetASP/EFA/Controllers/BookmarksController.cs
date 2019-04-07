@@ -81,6 +81,7 @@ namespace EFA.Controllers
         [HttpPost]
         public ActionResult Delete(Bookmark bookmark)
         {
+            bookmark = DB.Bookmarks.Where(x => x.Id == bookmark.Id).First();
             DB.Delete(bookmark);
 
             DB.SaveChanges();
