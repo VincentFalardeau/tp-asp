@@ -28,19 +28,32 @@ namespace EFA.Models
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }
 
-        public static Bookmark FromBookmarkView(BookmarkView bookmarkView)
+        public static Bookmark FromBookmarkView(BookmarkView bookmarkView, bool updating = false)
         {
             DBEntities db = new DBEntities();
             Bookmark bookmark = new Bookmark();
 
-            bookmark.Id = FindNextId();
-
+            if (updating)
+            {
+                bookmark.Id = bookmarkView.Id;
+                try
+                {
+                    bookmark.UserId = db.Users.Where(x => x.UserName == bookmarkView.OwnerName).FirstOrDefault().Id;
+                }
+                catch (Exception e)
+                {
+                    bookmark.UserId = OnlineUsers.GetSessionUser().Id;
+                }
+            }
+            else
+            {
+                bookmark.Id = FindNextId();
+                bookmark.UserId = OnlineUsers.GetSessionUser().Id;
+            }
+            bookmark.CategoryId = GetCategoryIdFromBookmarkView(bookmarkView);
             bookmark.Name = bookmarkView.Name;
             bookmark.Url = bookmarkView.Url;
             bookmark.Shared = bookmarkView.Shared;
-            bookmark.UserId = OnlineUsers.GetSessionUser().Id;
-
-            bookmark.CategoryId = GetCategoryIdFromBookmarkView(bookmarkView);
 
             return bookmark;
         }

@@ -129,13 +129,9 @@ namespace EFA.Controllers
         {
             if (ModelState.IsValid)
             {
-                Bookmark bookmark = new Bookmark();
-                bookmark.Id = bookmarkView.Id;
-                bookmark.Name = bookmarkView.Name;
-                bookmark.Shared = bookmarkView.Shared;
-                bookmark.Url = bookmarkView.Url;
-                bookmark.UserId = DB.Users.Where(x => x.UserName == bookmarkView.OwnerName).FirstOrDefault().Id;
-                bookmark.CategoryId = Bookmark.GetCategoryIdFromBookmarkView(bookmarkView);
+                bool updating = true;
+                Bookmark bookmark = Bookmark.FromBookmarkView(bookmarkView, updating);
+                
 
 
                 DB.Update(bookmark);
@@ -152,14 +148,9 @@ namespace EFA.Controllers
 
         public ActionResult Delete(BookmarkView bookmarkView)
         {
-            Bookmark bookmark = new Bookmark();
-            bookmark.Id = bookmarkView.Id;
-            bookmark.Name = bookmarkView.Name;
-            bookmark.Shared = bookmarkView.Shared;
-            bookmark.Url = bookmarkView.Url;
-            bookmark.UserId = DB.Users.Where(x => x.UserName == bookmarkView.OwnerName).First().Id;
-            bookmark.CategoryId = Bookmark.GetCategoryIdFromBookmarkView(bookmarkView);
-
+            bool updating = true;
+            Bookmark bookmark = Bookmark.FromBookmarkView(bookmarkView, updating);
+            
             return View(bookmark);
         }
 
@@ -173,21 +164,6 @@ namespace EFA.Controllers
 
             return RedirectToAction("Index");
         }
-
-       
-
-        //[HttpPost]
-        //public ActionResult Edit(Bookmark bookmark) {
-        //    DB.Bookmarks.Update(bookmark);
-        //    return RedirectToAction("Index");
-        //}
-
-        //public ActionResult Details(int Id) { Bookmark bookmark = DB.Bookmarks.Get(Id); return View(bookmark); }
-
-        //public ActionResult Delete(int Id) { Bookmark bookmark = DB.Bookmarks.Get(Id); return View(bookmark); }
-
-        //[HttpPost] public ActionResult Delete(Bookmark bookmark) { DB.Bookmarks.Delete(bookmark.Id); return RedirectToAction("Index"); }
-
     }
 
 
