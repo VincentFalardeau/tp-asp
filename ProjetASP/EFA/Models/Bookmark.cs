@@ -36,14 +36,7 @@ namespace EFA.Models
             if (updating)
             {
                 bookmark.Id = bookmarkView.Id;
-                try
-                {
-                    bookmark.UserId = db.Users.Where(x => x.UserName == bookmarkView.OwnerName).FirstOrDefault().Id;
-                }
-                catch (Exception e)
-                {
-                    bookmark.UserId = OnlineUsers.GetSessionUser().Id;
-                }
+                bookmark.UserId = bookmarkView.OwnerId;
             }
             else
             {

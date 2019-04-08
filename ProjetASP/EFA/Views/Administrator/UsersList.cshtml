@@ -11,7 +11,7 @@
 <table class="table">
     <tr>
         <th>
-           Online
+            Online
         </th>
         <th>
             @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.FirstName).ToString(), "User", "FirstName")
@@ -30,52 +30,56 @@
 
     @foreach (var item in Model)
     {
-    <tr>
+        if (OnlineUsers.GetSessionUser().Id != item.Id)
+        {
+            <tr>
 
 
-        <td>
-            @if (OnlineUsers.IsOnLine(item.Id))
-            {
-                <img style="height: 25px; width: 25px" src="~/Content/UI_Images/OnLine.png" />
-            }
-            else
-            {
-                <img style="height: 25px; width: 25px" src="~/Content/UI_Images/OffLine.png" />
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @item.CreationDate.ToLongDateString()
-        </td>
-        <td>
+                <td>
+                    @if (OnlineUsers.IsOnLine(item.Id))
+                    {
+                        <img style="height: 25px; width: 25px" src="~/Content/UI_Images/OnLine.png" />
+                    }
+                    else
+                    {
+                        <img style="height: 25px; width: 25px" src="~/Content/UI_Images/OffLine.png" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @item.CreationDate.ToLongDateString()
+                </td>
+                <td>
 
-            @if (item.Sex == 1)
-            {
-                <span>Male</span>
-            }
-            else if (item.Sex == 2)
-            {
-                <span>Female</span>
-            }
-            else if (item.Sex == 3)
-            {
-                <span>Other</span>
-            }
+                    @if (item.Sex == 1)
+                    {
+                        <span>Male</span>
+                    }
+                    else if (item.Sex == 2)
+                    {
+                        <span>Female</span>
+                    }
+                    else if (item.Sex == 3)
+                    {
+                        <span>Other</span>
+                    }
 
 
-        </td>
-        <td>
-            @item.BirthDate.ToLongDateString()
-        </td>
-        <td>
+                </td>
+                <td>
+                    @item.BirthDate.ToLongDateString()
+                </td>
+                <td>
 
-            <a href="@Url.Action("Delete", "Administrator", item)">
-                <img src="@Url.Content("~/Content/UI_Images/Delete.png")" style="height: 25px; width: 25px" />
-            </a>
-        </td>
-    </tr>
+                    <a href="@Url.Action("Delete", "Administrator", item)">
+                        <img src="@Url.Content("~/Content/UI_Images/Delete.png")" style="height: 25px; width: 25px" />
+                    </a>
+                </td>
+            </tr>
+        }
+
     }
 
 </table>
