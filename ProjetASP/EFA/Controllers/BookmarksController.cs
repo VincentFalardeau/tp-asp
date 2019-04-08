@@ -27,7 +27,7 @@ namespace EFA.Controllers
 
             if (Session["BookmarkFilterByOwnership"] == null)
             {
-                Session["BookmarkFilterByOwnership"] = "";
+                Session["BookmarkFilterByOwnership"] = -1;
             }
 
             if (Session["BookmarkFilterByCategory"] == null)
@@ -49,7 +49,7 @@ namespace EFA.Controllers
 
         public ActionResult FilterOwnership(int Ownership)
         {
-            Session["BookmarkFilterByOwnership"] = (Ownership == -1 ? -1 : Ownership);
+            Session["BookmarkFilterByOwnership"] = Ownership;
             return RedirectToAction("Index");
         }
 
@@ -69,21 +69,39 @@ namespace EFA.Controllers
         {
             User loggedUser = OnlineUsers.GetSessionUser();
             InitSessionSortAndFilter();
-            List<BookmarkView> bookmarks = DB.BookmarkList(loggedUser, (string)Session["BookmarkSortBy"], (bool)Session["BookmarkSortAscendant"]);
+            var Query = DB.BookmarkList(loggedUser, (string)Session["BookmarkSortBy"], (bool)Session["BookmarkSortAscendant"]);
 
-          
+            
 
             int categorieFilter = (int)Session["BookmarkFilterByCategory"];
-           ViewBag.Categories = DB.Categories;
+            int ownerShipFilter = (int)Session["BookmarkFilterByOwnership"];
+
+            ViewBag.Categories = DB.Categories;
+            ViewBag.Users = DB.Users;
+            ViewBag.CurrentUser = loggedUser;
 
             if (categorieFilter != -1)
             {
                 string categorie_name = DB.Categories.Where(x => x.Id == categorieFilter).FirstOrDefault().Name.ToString();
-                return View(bookmarks.Where(x => x.CategoryName == categorie_name).ToList());
+                Query = Query.Where(x => x.CategoryName == categorie_name).ToList();
             }
-                
 
-            return View(bookmarks);
+            if (ownerShipFilter != -1)
+            {
+                if(ownerShipFilter == -2)
+                {
+                    Query = Query.Where(x => x.Shared).ToList();
+                }else if (ownerShipFilter == -3)
+                {
+                    Query = Query.Where(x => !x.Shared).ToList();
+                }else
+                {
+                    Query = Query.Where(x => x.OwnerId == ownerShipFilter && !x.Shared).ToList();
+                }
+            }
+
+
+            return View(Query);
         }
 
 

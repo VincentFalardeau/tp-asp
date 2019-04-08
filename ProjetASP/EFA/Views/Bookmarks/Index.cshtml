@@ -5,15 +5,13 @@
 @{
     ViewBag.Title = "Index";
     IEnumerable<Category> categories = ViewBag.Categories;
+    IEnumerable<User> users = ViewBag.Users;
+    User current_user = ViewBag.CurrentUser;
     int categoryChoice = (int)Session["BookmarkFilterByCategory"];
+    int ownerShipsChoice = (int)Session["BookmarkFilterByOwnership"];
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<table class="table" style="margin-top: 20px">
     <tr>
         <th>
             @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.Name).ToString(), "Bookmark", "Name")
@@ -22,7 +20,7 @@
             @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.Url).ToString(), "Bookmark", "Url")
         </th>
         <th>
-            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.CategoryName).ToString(), "Bookmark", "Category")
+            @Helper.SortAction(Url, "Sort", "", "Bookmark", "Category")
             <select id="categorieFilterList">
                 <option value="-1" @(categoryChoice == -1 ? "selected" : "")>All categories</option>
                 @foreach (Category categorie in categories)
@@ -32,34 +30,69 @@
             </select>
         </th>
         <th>
-            @Helper.SortAction(Url, "Sort", Html.DisplayNameFor(model => model.OwnerName).ToString(), "Bookmark", "OwnerName")
+            @Helper.SortAction(Url, "Sort", "", "Bookmark", "OwnerName")
+            <select id="ownerShipFilterList">
+                <option value="-3" @(ownerShipsChoice == -3 ? "selected" : "")>Private</option>
+                <option value="-2" @(ownerShipsChoice == -2 ? "selected" : "")>Shared</option>
+
+                <option value="-1" @(ownerShipsChoice == -1 ? "selected" : "")>All ownerships</option>
+                @foreach (User user in users)
+                {
+                <option value="@((int)user.Id)" @(ownerShipsChoice == (int)user.Id ? "selected" : "")>@user.FirstName @user.LastName</option>
+                }
+            </select>
         </th>
 
 
-        <th></th>
+        <th style="text-align: center"> 
+            <a href="@Url.Action("Create", "Bookmarks")">
+                <img src="@Url.Content("~/Content/UI_Images/Add.png")" style="height: 25px; width: 25px" />
+            </a>
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td style="width: 10%; overflow-wrap: break-word">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td style="max-width: 400px; overflow-wrap: break-word">
+            <td style="width: 20%; overflow-wrap: break-word">
                 @Html.DisplayFor(modelItem => item.Url)
             </td>
-            <td>
+            <td  style="width: 20%; overflow-wrap: break-word">
                 @Html.DisplayFor(modelItem => item.CategoryName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerName)
+            <td  style="width: 20%; overflow-wrap: break-word">
+                @if (item.Shared)
+                {
+                    <span>Shared</span>
+                }
+                else
+                {
+                    @Html.ActionLink(item.OwnerName, "Edit", item.OwnerId)
+
+                }
             </td>
 
-            <td>
-                @Html.ActionLink("Edit", "Edit", item) |
-                @Html.ActionLink("Details", "Details", item) |
-                @Html.ActionLink("Delete", "Delete", item)
-            </td>
+            <td style="width: 40%; overflow-wrap: break-word; text-align:center">
+
+                @if (item.Shared || item.OwnerId == current_user.Id || current_user.Admin)
+                {
+                    <a href="@Url.Action("Edit", "Bookmarks", item)">
+                        <img src="@Url.Content("~/Content/UI_Images/Edit.png")" style="height: 25px; width: 25px" />
+                    </a>
+                }
+                <a href="@Url.Action("Details", "Bookmarks", item)">
+                    <img src="@Url.Content("~/Content/UI_Images/Details.png")" style="height: 25px; width: 25px" />
+                </a>
+                @if (item.Shared || item.OwnerId == current_user.Id || current_user.Admin)
+                {
+                <a href="@Url.Action("Delete", "Bookmarks", item)">
+                    <img src="@Url.Content("~/Content/UI_Images/Delete.png")" style="height: 25px; width: 25px" />
+                </a>
+                }
+                </td>
         </tr>
     }
 
@@ -73,6 +106,11 @@
             document.querySelector('#categorieFilterList').addEventListener('change', (event) => {
                 document.location = "@Url.Action("FilterCategory")" + "?Category=" + event.target.value;
             });
-        }
+             document.querySelector('#ownerShipFilterList').addEventListener('change', (event) => {
+                document.location = "@Url.Action("FilterOwnership")" + "?Ownership=" + event.target.value;
+            });
+    }
+
+
 
 </script>

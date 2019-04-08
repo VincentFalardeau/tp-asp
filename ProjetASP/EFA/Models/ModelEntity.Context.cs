@@ -178,8 +178,7 @@ namespace EFA.Models
             List<BookmarkView> bookmarkItems = new List<BookmarkView>();
             foreach (Bookmark bookmark in DB.Bookmarks)
             {
-                if ((viewer.Admin) || (viewer.Id == bookmark.UserId) || (bookmark.Shared))
-                {
+               
                     bookmarkItems.Add(new BookmarkView
                     {
                         Id = bookmark.Id,
@@ -192,7 +191,7 @@ namespace EFA.Models
 
 
                     });
-                }
+                
             }
             switch (SortBy)
             {

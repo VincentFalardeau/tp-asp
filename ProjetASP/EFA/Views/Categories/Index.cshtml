@@ -6,15 +6,17 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        <th></th>
+        <th>
+
+            <a href="@Url.Action("Create", "Categories")">
+                <img src="@Url.Content("~/Content/UI_Images/Add.png")" style="height: 25px; width: 25px" />
+            </a>
+        </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -23,8 +25,12 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a href="@Url.Action("Edit", "Categories", item)">
+                <img src="@Url.Content("~/Content/UI_Images/Edit.png")" style="height: 25px; width: 25px" />
+            </a>
+            <a href="@Url.Action("Delete", "Categories", item)">
+                <img src="@Url.Content("~/Content/UI_Images/Delete.png")" style="height: 25px; width: 25px" />
+            </a>
         </td>
     </tr>
 }
