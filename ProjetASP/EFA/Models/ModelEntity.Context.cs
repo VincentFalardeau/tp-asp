@@ -209,9 +209,18 @@ namespace EFA.Models
                     break;
                 case "OwnerName":
                     if (ascendant)
-                        bookmarkItems = bookmarkItems.OrderBy(b => b.OwnerName).ToList();
+                    {
+                        var temp = bookmarkItems;
+                        bookmarkItems = bookmarkItems.Where(x => x.Shared).ToList();
+                        bookmarkItems.AddRange(temp.OrderBy(b => b.OwnerName).Where(x => x.Shared == false).ToList());
+                    } 
                     else
-                        bookmarkItems = bookmarkItems.OrderByDescending(b => b.OwnerName).ToList();
+                    {
+                        var temp = bookmarkItems;
+                        bookmarkItems = (bookmarkItems.OrderByDescending(b => b.OwnerName).Where(x => x.Shared == false).ToList());
+                        bookmarkItems.AddRange(temp.Where(x => x.Shared).ToList());
+                        
+                    }
                     break;
                 case "Category":
                     if (ascendant)

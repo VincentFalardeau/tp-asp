@@ -111,48 +111,6 @@ namespace EFA.Controllers
             ViewBag.UserName = OnlineUsers.GetSessionUser().UserName;
         }
 
-        //public ActionResult Profile(User user)
-        //{
-        //    User userFound = DB.Users.Where(u => u.UserName == user.UserName).FirstOrDefault();
-
-        //    if (userFound != null && userFound.UserName != OnlineUsers.GetSessionUser().UserName)
-        //    {
-        //        ModelState.AddModelError("UserName", "This username is already taken. Please choose another one.");
-        //    }
-        //    if (user.Sex == SexType.Null)
-        //    {
-        //        ModelState.AddModelError("Sex", "You need to indicate your gender");
-        //    }
-
-        //    if(user.Password == "")
-        //    {
-        //        ModelState.AddModelError("Password", "A password is required");
-        //    }
-
-        //    bool invalidEmail = false;
-        //    try
-        //    {
-        //        invalidEmail = new System.Net.Mail.MailAddress(user.Email) == null;
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        invalidEmail = true;
-        //    }
-            
-        //    if (invalidEmail)
-        //    {
-        //        ModelState.AddModelError("Email", "Invalid email address");
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        DB.Update(user);
-
-        //        OnlineUsers.UpdateSessionUser(DB.Users.Find(user.Id));
-        //    }
-
-        //    return View(OnlineUsers.GetSessionUser());
-        //}
 
         public ActionResult Profile(UserView userView)
         {
